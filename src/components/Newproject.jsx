@@ -17,9 +17,9 @@ function NewProject() {
 
             <div>
                 <div>
-                    <Input label="Title" />
+                    <Input type="text" label="Title" />
                     <Input label="Description" textarea={true} />
-                    <Input label="Due Date" />
+                    <Input type="date" label="Due Date" />
                 </div>
             </div>
         </div>

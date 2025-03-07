@@ -1,47 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react';
 import './index.css';
 import Projectsidebar from './components/Projectsidebar';
 import Newproject from './components/Newproject';
 import NoProjectSelected from './components/NoProjectSelected';
 
 function App() {
+  const [projectsState, setProjectsState] = useState({
+    selectedProjectId: undefined,
+    projects: [],
+  });
 
-  const [ProjectsState, setProjectsState ] = useState({
-    selectedProjectId:undefined,
-    projects: []
-  })
-  
-  function handeleSelectProjects () {
-    setProjectsState (prevState => {
-      return{
-        ...prevState,
-        selectedProjectId: null, 
-      };
-    });
+  function handleSelectProjects() {
+    setProjectsState((prevState) => ({
+      ...prevState,
+      selectedProjectId: null,
+    }));
   }
-  
- let content;
- 
- if(ProjectsState.selectedProjectId === null){
-  content = <Newproject/>
- }else if (ProjectsState.selectedProjectId === undefined) {
-  content = <NoProjectSelected onStartAddProject= {handeleSelectProjects}/>;
- }
-  
-  const [count, setCount] = useState(0)
 
+  let content;
+
+  if (projectsState.selectedProjectId === null) {
+    content = <Newproject />;
+  } else if (projectsState.selectedProjectId === undefined) {
+    content = <NoProjectSelected onStartAddProject={handleSelectProjects} />;
+  }
 
   return (
     <>
-      <main className='h-screen my-8 flex gap-8'>
-        <Projectsidebar onStartAddProject= {handeleSelectProjects}/>
-        
+      <main className="h-screen my-8 flex gap-8">
+        <Projectsidebar onStartAddProject={handleSelectProjects} />
         {content}
       </main>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
