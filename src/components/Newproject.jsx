@@ -3,18 +3,20 @@ import Input from "./Input";
 
 function NewProject({onAdd}) {
     const title = useRef();
-    const discription = useRef();
-    const duedate = useRef();
+    const description = useRef();
+    const dueDate= useRef();
 
-    function handleSave (onAdd) {
+    function handleSave () {
         const enteredTitle = title.current.value;
-        const enteredDiscription = discription.current.value;
-        const enteredDueDate = duedate.current.value;
+        const enteredDescription = description.current.value;
+        const enteredDueDate= dueDate.current.value;
 
         onAdd({
-            title:enteredTitle,
-            discription:enteredDiscription,
-            duedate:enteredDueDate,
+            title: enteredTitle,
+            description: enteredDescription,
+            dueDate: enteredDueDate,
+
+            
         })
     }
     return (
@@ -34,9 +36,9 @@ function NewProject({onAdd}) {
 
             <div>
                 <div>
-                    <Input ref={title} label="Title" />
-                    <Input ref= {discription} textarea={true} />
-                    <Input ref={duedate} label="Due Date" />
+                    <Input type="text" ref={title} label="Title" />
+                    <Input ref= {description} textarea={true} />
+                    <Input type="date" ref={dueDate} label="Due Date" />
                 </div>
             </div>
         </div>
