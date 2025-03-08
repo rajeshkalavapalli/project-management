@@ -1,7 +1,7 @@
-import { forwardRef, useImperativeHandle, useState } from "react";
+import { forwardRef, useImperativeHandle, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-const Model = forwardRef(({ children, buttonCaption }, ref) => {
+const Modal = forwardRef(({ children, buttonCaption = "Close" }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
 
     useImperativeHandle(ref, () => ({
@@ -13,9 +13,20 @@ const Model = forwardRef(({ children, buttonCaption }, ref) => {
         },
     }));
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden"; 
+        } else {
+            document.body.style.overflow = ""; 
+        }
+
+        return () => {
+            document.body.style.overflow = ""; 
+        };
+    }, [isOpen]);
+
     if (!isOpen) return null;
 
-    // 🔥 Ensure modal-root exists before rendering the portal
     const modalRoot = document.getElementById("modal-root");
     if (!modalRoot) {
         console.error("Error: Modal root element (#modal-root) not found.");
@@ -23,12 +34,20 @@ const Model = forwardRef(({ children, buttonCaption }, ref) => {
     }
 
     return createPortal(
-        <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="bg-white p-6 rounded shadow-md">
+        <div 
+            className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50"
+            role="dialog"
+            aria-modal="true"
+            onClick={() => setIsOpen(false)} 
+        >
+            <div 
+                className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full transform transition-all duration-300 scale-95 hover:scale-100 relative"
+                onClick={(e) => e.stopPropagation()} 
+            >
                 {children}
                 <button
                     onClick={() => setIsOpen(false)}
-                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded"
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition active:scale-95"
                 >
                     {buttonCaption}
                 </button>
@@ -38,4 +57,4 @@ const Model = forwardRef(({ children, buttonCaption }, ref) => {
     );
 });
 
-export default Model;
+export default Modal;

@@ -1,0 +1,49 @@
+/* Make the main container flexible */
+main {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  padding: 10px;
+}
+
+/* Sidebar styling */
+.Projectsidebar {
+  flex: 1;
+  min-width: 250px;
+  max-width: 300px;
+}
+
+/* Content area styling */
+.content {
+  flex: 2;
+  min-width: 300px;
+  max-width: 900px;
+}
+
+/* Make buttons responsive */
+button {
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  main {
+      flex-direction: column;
+      align-items: center;
+  }
+
+  .Projectsidebar {
+      width: 100%;
+      max-width: none;
+  }
+
+  .content {
+      width: 100%;
+  }
+
+  button {
+      width: 100%;
+  }
+}

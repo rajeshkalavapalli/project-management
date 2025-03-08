@@ -4,6 +4,7 @@ import Projectsidebar from "./components/Projectsidebar";
 import Newproject from "./components/Newproject";
 import NoProjectSelected from "./components/NoProjectSelected";
 import SelectedProject from "./components/SelectedProject";
+import Heading from "./components/Heading";
 
 function App() {
   const [projectsState, setProjectsState] = useState({
@@ -14,16 +15,15 @@ function App() {
 
   function handleAddTask(text) {
     setProjectsState((prevState) => {
-      const taskId = Math.random().toString(); 
+      const taskId = Math.random().toString();
       const newTask = {
         text: text,
         projectId: prevState.selectedProjectId,
         id: taskId,
       };
-
       return {
         ...prevState,
-        tasks: [...prevState.tasks, newTask], 
+        tasks: [...prevState.tasks, newTask],
       };
     });
   }
@@ -31,12 +31,9 @@ function App() {
   function handleDeleteTask(id) {
     setProjectsState((prevState) => ({
       ...prevState,
-      tasks: prevState.tasks.filter(
-        (task) => task.id !== id 
-      ),
+      tasks: prevState.tasks.filter((task) => task.id !== id),
     }));
   }
-  
 
   function handleDeleteProject() {
     setProjectsState((prevState) => ({
@@ -67,12 +64,11 @@ function App() {
 
   function handleAddProject(projectData) {
     setProjectsState((prevState) => {
-      const projectId = Math.random().toString(); 
+      const projectId = Math.random().toString();
       const newProject = {
         ...projectData,
         id: projectId,
       };
-
       return {
         ...prevState,
         selectedProjectId: undefined,
@@ -93,11 +89,11 @@ function App() {
       <SelectedProject
         project={selectedProject}
         onDelete={handleDeleteProject}
-        onAddTask={handleAddTask} 
+        onAddTask={handleAddTask}
         onDeleteTask={handleDeleteTask}
         tasks={projectsState.tasks.filter(
           (task) => task.projectId === projectsState.selectedProjectId
-        )} 
+        )}
       />
     );
   } else {
@@ -105,15 +101,20 @@ function App() {
   }
 
   return (
-    <main className="h-screen my-8 flex gap-8">
-      <Projectsidebar
-        onSelectProject={handleSelectProject}
-        onStartAddProject={handleStartAddProject}
-        projects={projectsState.projects}
-        selectedProjectId={projectsState.selectedProjectId}
-      />
-      {content}
-    </main>
+    <div className="min-h-screen bg-gradient-to-b from-gray-100 to-blue-50 text-gray-900">
+      <Heading />
+      <main className="flex flex-col md:flex-row gap-6 p-6">
+        <Projectsidebar
+          onSelectProject={handleSelectProject}
+          onStartAddProject={handleStartAddProject}
+          projects={projectsState.projects}
+          selectedProjectId={projectsState.selectedProjectId}
+        />
+        <div className="flex-1 bg-white shadow-xl rounded-2xl p-6 border border-gray-200 transform transition duration-500 hover:scale-105">
+          {content}
+        </div>
+      </main>
+    </div>
   );
 }
 

@@ -2,25 +2,26 @@ import Button from "./Button.jsx";
 
 function Projectsidebar({ onStartAddProject, projects, onSelectProject, selectedProjectId }) {
     return (
-        <aside className="w-1/3 px-8 py-16 bg-stone-900 text-stone-50 md:w-72 rounded-r-xl">
-            <h2 className="mb-8 font-bold uppercase md:text-xl text-stone-200">Your Projects</h2>
+        <aside className="w-full md:w-72 px-6 py-10 bg-gradient-to-b from-blue-900 to-gray-900 text-white rounded-r-3xl shadow-2xl">
+            <h2 className="mb-6 font-bold uppercase text-lg md:text-xl text-blue-300 tracking-wide">
+                Your Projects
+            </h2>
             <div>
-                <Button onClick={onStartAddProject}> + Add Project</Button>
+                <Button className="w-full bg-blue-500 hover:bg-blue-600 transition-transform transform hover:scale-105 duration-300 shadow-xl" onClick={onStartAddProject}>
+                    + Add Project
+                </Button>
             </div>
-            <ul className="mt-8">
+            <ul className="mt-6">
                 {projects.map((project) => {
-                    let cssClass = "w-full text-left px-2 py-1 rounded-sm my-1 hover:text-stone-200 hover:bg-stone-800";
-
-                    if (project.id === selectedProjectId) {
-                        cssClass += " bg-stone-800 text-stone-200";
-                    } else {
-                        cssClass += " text-stone-400";
-                    }
-
+                    const isSelected = project.id === selectedProjectId;
                     return (
-                        <li key={project.id}>
-                            <button className={cssClass} onClick={() => onSelectProject(project.id)}>
-                                {project.title} {/* ✅ FIXED */}
+                        <li key={project.id} className="my-2">
+                            <button
+                                className={`w-full text-left px-4 py-2 rounded-lg font-medium transition-all duration-300 
+                                    ${isSelected ? "bg-blue-600 text-white shadow-lg scale-105" : "text-blue-200 hover:bg-blue-700 hover:text-white hover:shadow-md"}`}
+                                onClick={() => onSelectProject(project.id)}
+                            >
+                                {project.title}
                             </button>
                         </li>
                     );
