@@ -11,6 +11,15 @@ function App() {
     projects: [],
   });
 
+
+  function HandleDeleteProject () {
+    setProjectsState((prevState) => ({
+      ...prevState,
+      selectedProjectId: null,
+      projects: prevState.projects.filter((project) => project.id !==prevState.selectedProjectId)
+    }));    
+  }
+
   function handleSelectProject(id) {
     setProjectsState((prevState) => ({
       ...prevState,
@@ -49,7 +58,7 @@ function App() {
   if (projectsState.selectedProjectId === null) {
     content = <Newproject onAdd={handleAddProject} />;
   } else if (selectedProject) {
-    content = <SelectedProject project={selectedProject} />;
+    content = <SelectedProject project={selectedProject}  onDelete= {HandleDeleteProject}/>;
   } else {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
