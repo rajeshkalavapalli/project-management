@@ -1,23 +1,54 @@
-import { useState } from 'react';
-import './index.css';
-import Projectsidebar from './components/Projectsidebar';
-import Newproject from './components/Newproject';
-import NoProjectSelected from './components/NoProjectSelected';
-import SelectedProject from './components/SelectedProject';
+import { useState } from "react";
+import "./index.css";
+import Projectsidebar from "./components/Projectsidebar";
+import Newproject from "./components/Newproject";
+import NoProjectSelected from "./components/NoProjectSelected";
+import SelectedProject from "./components/SelectedProject";
 
 function App() {
   const [projectsState, setProjectsState] = useState({
     selectedProjectId: undefined,
     projects: [],
+    tasks: [],
   });
 
+  function handleAddTask(text) {
+    setProjectsState((prevState) => {
+      const taskId = Math.random().toString(); 
+      const newTask = {
+        text: text,
+        projectId: prevState.selectedProjectId,
+        id: taskId,
+      };
 
-  function HandleDeleteProject () {
+      return {
+        ...prevState,
+        tasks: [...prevState.tasks, newTask], 
+      };
+    });
+  }
+
+  function handleDeleteTask(id) {
+    setProjectsState((prevState) => ({
+      ...prevState,
+      tasks: prevState.tasks.filter(
+        (task) => task.id !== id 
+      ),
+    }));
+  }
+  
+
+  function handleDeleteProject() {
     setProjectsState((prevState) => ({
       ...prevState,
       selectedProjectId: null,
-      projects: prevState.projects.filter((project) => project.id !==prevState.selectedProjectId)
-    }));    
+      projects: prevState.projects.filter(
+        (project) => project.id !== prevState.selectedProjectId
+      ),
+      tasks: prevState.tasks.filter(
+        (task) => task.projectId !== prevState.selectedProjectId
+      ),
+    }));
   }
 
   function handleSelectProject(id) {
@@ -36,7 +67,7 @@ function App() {
 
   function handleAddProject(projectData) {
     setProjectsState((prevState) => {
-      const projectId = Math.random().toString(); // Ensure ID is unique
+      const projectId = Math.random().toString(); 
       const newProject = {
         ...projectData,
         id: projectId,
@@ -58,23 +89,31 @@ function App() {
   if (projectsState.selectedProjectId === null) {
     content = <Newproject onAdd={handleAddProject} />;
   } else if (selectedProject) {
-    content = <SelectedProject project={selectedProject}  onDelete= {HandleDeleteProject}/>;
+    content = (
+      <SelectedProject
+        project={selectedProject}
+        onDelete={handleDeleteProject}
+        onAddTask={handleAddTask} 
+        onDeleteTask={handleDeleteTask}
+        tasks={projectsState.tasks.filter(
+          (task) => task.projectId === projectsState.selectedProjectId
+        )} 
+      />
+    );
   } else {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
   }
 
   return (
-    <>
-      <main className="h-screen my-8 flex gap-8">
-        <Projectsidebar
-          onSelectProject={handleSelectProject}
-          onStartAddProject={handleStartAddProject}
-          projects={projectsState.projects}
-          selectedProjectId={projectsState.selectedProjectId}
-        />
-        {content}
-      </main>
-    </>
+    <main className="h-screen my-8 flex gap-8">
+      <Projectsidebar
+        onSelectProject={handleSelectProject}
+        onStartAddProject={handleStartAddProject}
+        projects={projectsState.projects}
+        selectedProjectId={projectsState.selectedProjectId}
+      />
+      {content}
+    </main>
   );
 }
 
